@@ -62,7 +62,7 @@ export function PrayerSection() {
     return () => clearTimeout(t);
   }, [prayers]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
     const trimmed = inputName.trim();
     if (!trimmed) {
@@ -168,7 +168,7 @@ export function PrayerSection() {
 
           {/* Cooldown progress bar */}
           <div
-            className={`overflow-hidden transition-all duration-300 ${
+            className={`overflow-visible transition-all duration-300 ${
               isOnCooldown ? "max-h-4 opacity-100" : "max-h-0 opacity-0"
             }`}
           >
