@@ -41,7 +41,7 @@ export function WhyBelovedSection() {
             <div className="w-1.5 h-1.5 rotate-45 bg-primary" />
             <div className="w-12 h-px bg-primary/40" />
           </div>
-          <p className="text-muted-foreground font-[var(--font-cormorant)] text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground font-(--font-cormorant) text-lg max-w-2xl mx-auto">
             For over two decades, Remilia Scarlet has captured the hearts of fans worldwide.
             Here&apos;s what makes her so special.
           </p>
@@ -64,7 +64,7 @@ export function WhyBelovedSection() {
                     <h3 className="text-xl font-serif text-foreground mb-3">
                       {reason.title}
                     </h3>
-                    <p className="text-muted-foreground font-[var(--font-cormorant)] leading-relaxed">
+                    <p className="text-muted-foreground font-(--font-cormorant) leading-relaxed">
                       {reason.description}
                     </p>
                   </div>
@@ -76,7 +76,7 @@ export function WhyBelovedSection() {
 
         {/* Quote */}
         <div className="mt-16 text-center">
-          <blockquote className="text-xl md:text-2xl text-foreground font-[var(--font-cormorant)] italic max-w-3xl mx-auto">
+          <blockquote className="text-xl md:text-2xl text-foreground font-(--font-cormorant) italic max-w-3xl mx-auto">
             &ldquo;The night belongs to those who dare to embrace it.&rdquo;
           </blockquote>
           <p className="text-primary mt-4 tracking-wider text-sm">— Remilia Scarlet</p>
