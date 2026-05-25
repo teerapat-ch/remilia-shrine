@@ -228,7 +228,7 @@ export function PrayerSection() {
                 index < prayers.length - 1 ? "border-b border-border" : ""
               } ${
                 prayer.isNew
-                  ? "opacity-0 translate-y-[-8px]"
+                  ? "opacity-0 -translate-y-2"
                   : "opacity-100 translate-y-0"
               }`}
               style={
