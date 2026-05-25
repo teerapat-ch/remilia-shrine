@@ -4,34 +4,7 @@ import { useState, useCallback, useEffect } from "react"
 import useEmblaCarousel from "embla-carousel-react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
-
-const placeholderImages = [
-  {
-    id: 1,
-    src: "/remilia_full.png",
-    alt: "Remilia Scarlet artwork 1",
-  },
-  {
-    id: 2,
-    src: "/remilia_pose.png",
-    alt: "Remilia Scarlet artwork 2",
-  },
-  {
-    id: 3,
-    src: "/remilia_wine.png",
-    alt: "Remilia Scarlet artwork 3",
-  },
-  {
-    id: 4,
-    src: "/remilia_front.png",
-    alt: "Remilia Scarlet artwork 4",
-  },
-  {
-    id: 5,
-    src: "/remilia_drunk.png",
-    alt: "Remilia Scarlet artwork 5",
-  },
-]
+import { remiliaGalleryImages } from "@/lib/remilia-gallery"
 
 export function ImageGallery() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: "center" })
@@ -75,7 +48,7 @@ export function ImageGallery() {
         <div className="relative">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-4">
-              {placeholderImages.map((image, index) => (
+              {remiliaGalleryImages.map((image, index) => (
                 <div
                   key={image.id}
                   className={`flex-[0_0_70%] md:flex-[0_0_45%] lg:flex-[0_0_35%] min-w-0 transition-all duration-500 ${
@@ -137,7 +110,7 @@ export function ImageGallery() {
 
         {/* Dots Indicator */}
         <div className="flex justify-center gap-2 mt-8">
-          {placeholderImages.map((_, index) => (
+          {remiliaGalleryImages.map((_, index) => (
             <button
               key={index}
               onClick={() => emblaApi?.scrollTo(index)}
