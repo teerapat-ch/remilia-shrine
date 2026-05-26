@@ -11,7 +11,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Effect */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
       
       {/* Decorative Elements */}
       <div className="absolute top-20 left-10 w-32 h-32 border border-primary/20 rotate-45 opacity-30" />
@@ -23,9 +23,9 @@ export function HeroSection() {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         {/* Decorative Line */}
         <div className="flex items-center justify-center gap-4 mb-8">
-          <div className="w-16 h-px bg-gradient-to-r from-transparent to-primary/60" />
+          <div className="w-16 h-px bg-linear-to-r from-transparent to-primary/60" />
           <div className="w-2 h-2 rotate-45 border border-primary" />
-          <div className="w-16 h-px bg-gradient-to-l from-transparent to-primary/60" />
+          <div className="w-16 h-px bg-linear-to-l from-transparent to-primary/60" />
         </div>
 
         {/* Title */}
@@ -37,20 +37,20 @@ export function HeroSection() {
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg md:text-xl text-muted-foreground font-[var(--font-cormorant)] leading-relaxed max-w-2xl mx-auto mb-4">
+        <p className="text-lg md:text-xl text-muted-foreground font-(--font-cormorant) leading-relaxed max-w-2xl mx-auto mb-4">
           The Eternal Mistress of the Scarlet Devil Mansion
         </p>
 
         {/* Description */}
-        <p className="text-base text-muted-foreground/80 font-[var(--font-cormorant)] leading-relaxed max-w-xl mx-auto mb-12">
+        <p className="text-base text-muted-foreground/80 font-(--font-cormorant) leading-relaxed max-w-xl mx-auto mb-12">
           A charismatic vampire of approximately 500 years, ruling over Gensokyo&apos;s most prestigious mansion with elegance, power, and an undying spirit.
         </p>
 
         {/* Decorative Line */}
         <div className="flex items-center justify-center gap-4 mb-12">
-          <div className="w-24 h-px bg-gradient-to-r from-transparent to-primary/40" />
+          <div className="w-24 h-px bg-linear-to-r from-transparent to-primary/40" />
           <div className="text-primary text-xl">✦</div>
-          <div className="w-24 h-px bg-gradient-to-l from-transparent to-primary/40" />
+          <div className="w-24 h-px bg-linear-to-l from-transparent to-primary/40" />
         </div>
 
         {/* Scroll Indicator */}

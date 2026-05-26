@@ -41,7 +41,7 @@ export function SupportSection() {
             <div className="w-1.5 h-1.5 rotate-45 bg-primary" />
             <div className="w-12 h-px bg-primary/40" />
           </div>
-          <p className="text-muted-foreground font-[var(--font-cormorant)] text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground font-(--font-cormorant) text-lg max-w-2xl mx-auto">
             There are many ways you can contribute to this community and show your
             appreciation for Remilia Scarlet.
           </p>
@@ -62,7 +62,7 @@ export function SupportSection() {
                 <h3 className="text-lg font-serif text-foreground mb-2">
                   {way.title}
                 </h3>
-                <p className="text-sm text-muted-foreground font-[var(--font-cormorant)] leading-relaxed mb-4 flex-1">
+                <p className="text-sm text-muted-foreground font-(--font-cormorant) leading-relaxed mb-4 flex-1">
                   {way.description}
                 </p>
               </div>
@@ -72,7 +72,7 @@ export function SupportSection() {
 
         {/* Footer Note */}
         <div className="mt-16 text-center">
-          <p className="text-muted-foreground font-[var(--font-cormorant)] text-sm">
+          <p className="text-muted-foreground font-(--font-cormorant) text-sm">
             This is a fan-made website. Touhou Project and all related characters are
             property of Team Shanghai Alice.
           </p>

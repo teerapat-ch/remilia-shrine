@@ -47,7 +47,7 @@ export function GalleryGrid() {
           >
             <div
               className={`relative w-full bg-primary/5 ${
-                index === 0 ? "aspect-4/5 md:aspect-auto md:h-full min-h-[280px]" : "aspect-3/4"
+                index === 0 ? "aspect-4/5 md:aspect-auto md:h-full min-h-70" : "aspect-3/4"
               }`}
             >
               <Image
