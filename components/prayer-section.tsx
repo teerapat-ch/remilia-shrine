@@ -12,7 +12,8 @@ interface Prayer {
   isNew?: boolean;
 }
 
-const COOLDOWN_DURATION = 30;
+const COOLDOWN_DURATION = 10;
+const COOLDOWN_STORAGE_KEY = "prayerCooldownEnd";
 
 function formatRelativeTime(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -37,16 +38,7 @@ function rowToPrayer(row: PrayerRow): Prayer {
 }
 
 export function PrayerSection() {
-  const [prayers, setPrayers] = useState<Prayer[]>([
-    { id: 8, name: "ScarletFan42", timestamp: "2 hours ago" },
-    { id: 7, name: "MistyLake", timestamp: "5 hours ago" },
-    { id: 6, name: "GensokyoExplorer", timestamp: "1 day ago" },
-    { id: 5, name: "LoreKeeper", timestamp: "2 days ago" },
-    { id: 4, name: "PatchouliReader", timestamp: "3 days ago" },
-    { id: 3, name: "SakuyaIzayoi", timestamp: "4 days ago" },
-    { id: 2, name: "FlandreSister", timestamp: "1 week ago" },
-    { id: 1, name: "MeilingGuard", timestamp: "2 weeks ago" },
-  ]);
+  const [prayers, setPrayers] = useState<Prayer[]>([]);
   const [inputName, setInputName] = useState("");
   const [cooldown, setCooldown] = useState(0);
   const [justPrayed, setJustPrayed] = useState(false);
@@ -54,7 +46,7 @@ export function PrayerSection() {
   const [submitError, setSubmitError] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Fetch prayers from Supabase on mount
+  // Fetch prayers and restore cooldown from localStorage on mount
   useEffect(() => {
     const supabase = createClient();
     supabase
@@ -66,6 +58,16 @@ export function PrayerSection() {
           setPrayers(data.map(rowToPrayer));
         }
       });
+
+    const stored = localStorage.getItem(COOLDOWN_STORAGE_KEY);
+    if (stored) {
+      const remaining = Math.ceil((Number(stored) - Date.now()) / 1000);
+      if (remaining > 0) {
+        setCooldown(remaining);
+      } else {
+        localStorage.removeItem(COOLDOWN_STORAGE_KEY);
+      }
+    }
   }, []);
 
   // Cooldown ticker
@@ -78,6 +80,7 @@ export function PrayerSection() {
       setCooldown((prev) => {
         if (prev <= 1) {
           clearInterval(intervalRef.current!);
+          localStorage.removeItem(COOLDOWN_STORAGE_KEY);
           return 0;
         }
         return prev - 1;
@@ -121,6 +124,10 @@ export function PrayerSection() {
       setInputName("");
       setJustPrayed(true);
       setCooldown(COOLDOWN_DURATION);
+      localStorage.setItem(
+        COOLDOWN_STORAGE_KEY,
+        String(Date.now() + COOLDOWN_DURATION * 1000),
+      );
       setTimeout(() => setJustPrayed(false), 2500);
     } catch {
       setSubmitError(true);
