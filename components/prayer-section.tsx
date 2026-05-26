@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Flame, ScrollText } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import { submitPrayer, type Prayer as PrayerRow } from "@/app/pray/actions";
 
 interface Prayer {
   id: number;
@@ -10,26 +12,63 @@ interface Prayer {
   isNew?: boolean;
 }
 
-const COOLDOWN_DURATION = 30;
+const COOLDOWN_DURATION = 10;
+const COOLDOWN_STORAGE_KEY = "prayerCooldownEnd";
 
-const initialPrayers: Prayer[] = [
-  { id: 8, name: "ScarletFan42", timestamp: "2 hours ago" },
-  { id: 7, name: "MistyLake", timestamp: "5 hours ago" },
-  { id: 6, name: "GensokyoExplorer", timestamp: "1 day ago" },
-  { id: 5, name: "LoreKeeper", timestamp: "2 days ago" },
-  { id: 4, name: "PatchouliReader", timestamp: "3 days ago" },
-  { id: 3, name: "SakuyaIzayoi", timestamp: "4 days ago" },
-  { id: 2, name: "FlandreSister", timestamp: "1 week ago" },
-  { id: 1, name: "MeilingGuard", timestamp: "2 weeks ago" },
-];
+function formatRelativeTime(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const seconds = Math.floor(diff / 1000);
+  if (seconds < 60) return "Just now";
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days} day${days === 1 ? "" : "s"} ago`;
+  const months = Math.floor(days / 30);
+  return `${months} month${months === 1 ? "" : "s"} ago`;
+}
+
+function rowToPrayer(row: PrayerRow): Prayer {
+  return {
+    id: row.id,
+    name: row.name,
+    timestamp: formatRelativeTime(row.created_at),
+  };
+}
 
 export function PrayerSection() {
-  const [prayers, setPrayers] = useState<Prayer[]>(initialPrayers);
+  const [prayers, setPrayers] = useState<Prayer[]>([]);
   const [inputName, setInputName] = useState("");
   const [cooldown, setCooldown] = useState(0);
   const [justPrayed, setJustPrayed] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [submitError, setSubmitError] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Fetch prayers and restore cooldown from localStorage on mount
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("prayers")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (!error && data?.length) {
+          setPrayers(data.map(rowToPrayer));
+        }
+      });
+
+    const stored = localStorage.getItem(COOLDOWN_STORAGE_KEY);
+    if (stored) {
+      const remaining = Math.ceil((Number(stored) - Date.now()) / 1000);
+      if (remaining > 0) {
+        setCooldown(remaining);
+      } else {
+        localStorage.removeItem(COOLDOWN_STORAGE_KEY);
+      }
+    }
+  }, []);
 
   // Cooldown ticker
   useEffect(() => {
@@ -41,6 +80,7 @@ export function PrayerSection() {
       setCooldown((prev) => {
         if (prev <= 1) {
           clearInterval(intervalRef.current!);
+          localStorage.removeItem(COOLDOWN_STORAGE_KEY);
           return 0;
         }
         return prev - 1;
@@ -62,7 +102,7 @@ export function PrayerSection() {
     return () => clearTimeout(t);
   }, [prayers]);
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     const trimmed = inputName.trim();
     if (!trimmed) {
@@ -70,20 +110,29 @@ export function PrayerSection() {
       return;
     }
     setErrorMsg("");
+    setSubmitError(false);
 
-    const newPrayer: Prayer = {
-      id: Date.now(),
-      name: trimmed,
-      timestamp: "Just now",
-      isNew: true,
-    };
-
-    setPrayers((prev) => [newPrayer, ...prev]);
-    setInputName("");
-    setJustPrayed(true);
-    setCooldown(COOLDOWN_DURATION);
-
-    setTimeout(() => setJustPrayed(false), 2500);
+    try {
+      const row = await submitPrayer(trimmed);
+      const newPrayer: Prayer = {
+        id: row.id,
+        name: row.name,
+        timestamp: "Just now",
+        isNew: true,
+      };
+      setPrayers((prev) => [newPrayer, ...prev]);
+      setInputName("");
+      setJustPrayed(true);
+      setCooldown(COOLDOWN_DURATION);
+      localStorage.setItem(
+        COOLDOWN_STORAGE_KEY,
+        String(Date.now() + COOLDOWN_DURATION * 1000),
+      );
+      setTimeout(() => setJustPrayed(false), 2500);
+    } catch {
+      setSubmitError(true);
+      setTimeout(() => setSubmitError(false), 3000);
+    }
   };
 
   const cooldownProgress = (cooldown / COOLDOWN_DURATION) * 100;
@@ -151,6 +200,13 @@ export function PrayerSection() {
           {errorMsg && (
             <p className="text-xs text-destructive-foreground font-(--font-cormorant)">
               {errorMsg}
+            </p>
+          )}
+
+          {/* Submit error */}
+          {submitError && (
+            <p className="text-xs text-destructive-foreground font-(--font-cormorant)">
+              Failed to submit prayer. Please try again.
             </p>
           )}
 

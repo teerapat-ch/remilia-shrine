@@ -16,13 +16,13 @@ export function AboutSection() {
 
         {/* Content */}
         <div className="space-y-6 text-center">
-          <p className="text-lg md:text-xl text-foreground font-[var(--font-cormorant)] leading-relaxed">
+          <p className="text-lg md:text-xl text-foreground font-(--font-cormorant) leading-relaxed">
             Welcome to the unofficial fan shrine dedicated to{" "}
             <span className="text-primary font-semibold">Remilia Scarlet</span>,
             the beloved vampire mistress from the Touhou Project series.
           </p>
 
-          <p className="text-base md:text-lg text-muted-foreground font-[var(--font-cormorant)] leading-relaxed">
+          <p className="text-base md:text-lg text-muted-foreground font-(--font-cormorant) leading-relaxed">
             This website serves as a gathering place for fans who admire the elegance,
             charisma, and enduring charm of Gensokyo&apos;s most distinguished vampire.
             Here you&apos;ll find artwork, discussions, and a community of devoted admirers.
@@ -34,7 +34,7 @@ export function AboutSection() {
                 <span className="text-primary text-xl">🎨</span>
               </div>
               <h3 className="text-lg font-serif text-foreground mb-2">Fan Art</h3>
-              <p className="text-sm text-muted-foreground font-[var(--font-cormorant)]">
+              <p className="text-sm text-muted-foreground font-(--font-cormorant)">
                 Curated collection of beautiful artwork from talented artists
               </p>
             </div>
@@ -44,7 +44,7 @@ export function AboutSection() {
                 <span className="text-primary text-xl">💬</span>
               </div>
               <h3 className="text-lg font-serif text-foreground mb-2">Community</h3>
-              <p className="text-sm text-muted-foreground font-[var(--font-cormorant)]">
+              <p className="text-sm text-muted-foreground font-(--font-cormorant)">
                 Connect with fellow fans and share your appreciation
               </p>
             </div>
@@ -54,7 +54,7 @@ export function AboutSection() {
                 <span className="text-primary text-xl">📚</span>
               </div>
               <h3 className="text-lg font-serif text-foreground mb-2">Lore</h3>
-              <p className="text-sm text-muted-foreground font-[var(--font-cormorant)]">
+              <p className="text-sm text-muted-foreground font-(--font-cormorant)">
                 Deep dives into the character&apos;s history and significance
               </p>
             </div>
